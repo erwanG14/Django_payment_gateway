@@ -9,11 +9,15 @@ from django.db import models
 class Objet(models.Model):
     prix = models.IntegerField(default=0)
     nom = models.CharField(max_length=50)
+    def __str__(self):
+        return self.nom
 
 class Transaction(models.Model):
     token = models.CharField(max_length=100)
     objet = models.ForeignKey(Objet, on_delete=models.PROTECT)
     ammount = models.IntegerField(default = 0)
+    def __str__(self):
+        return str(self.id)
     
     
     
