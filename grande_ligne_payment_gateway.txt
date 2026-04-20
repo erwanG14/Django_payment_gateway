@@ -6,6 +6,6 @@ banque_client : detail compte
 site_marchand : token_gateway montant a payer
 Gateway : info client chiffré, token permettant de retrouvrer les infos client, detail transaction
 
-lorsque le client paye -> Gateway recup les donnée -> Gateway envoi un token au site marchand-> site marchand envoi uune transaction a 
+lorsque le client paye -> Gateway recup les donnée -> Gateway envoi un token au site marchand -> site marchand envoi uune transaction a 
 Gateway avec token + montant -> Gateway retrouve données moyen du paiement lié au token -> transformation en donnée chiffré a la banque->
 banque verifie info client et accepte ou refuse -> Gateway envoi info au site machand -> page de succès ou d'echec

@@ -1,4 +1,5 @@
 from django.db import models
+import uuid
 
 # Create your models here.
 
@@ -12,15 +13,16 @@ class Objet(models.Model):
     def __str__(self):
         return self.nom
 
-class Transaction(models.Model):
-    token = models.CharField(max_length=100)
-    objet = models.ForeignKey(Objet, on_delete=models.PROTECT)
-    ammount = models.IntegerField(default = 0)
+class Session(models.Model):
+    objet = models.CharField(max_length=50)
+    ammount = models.IntegerField(default=0)
     def __str__(self):
         return str(self.id)
     
-    
-    
+def Create_Session(produit):
+    objet = produit
+    ammount = produit.prix
+    Session.objects.create(objet=objet, ammount=ammount)
     
 
 

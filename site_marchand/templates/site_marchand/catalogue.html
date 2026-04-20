@@ -14,7 +14,7 @@
             <h2>{{ produit.nom }}</h2>
             <p>Prix : {{ produit.prix }} €</p>
 
-            <a href="/payer/{{ produit.id }}/">
+            <a href="http://localhost:8000/site_marchand/initier/?id={{ produit.id }}">
                 <button>Payer</button>
             </a>
         </div>
