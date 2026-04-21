@@ -8,7 +8,7 @@ import uuid
 # on ne peut acheter qu'un seul objet sur ce site
 
 class Objet(models.Model):
-    prix = models.IntegerField(default=0)
+    prix = models.PositiveIntegerField(default=0)
     nom = models.CharField(max_length=50)
     def __str__(self):
         return self.nom
