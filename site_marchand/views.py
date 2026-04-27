@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from django.http import HttpResponse,request
+from django.http import HttpResponseBadRequest,request
 from django.template import loader
 import requests
 
@@ -17,11 +17,13 @@ def initier(request):
         return redirect(url)
     
     id_objet =  request.GET.get('id')
-    objet =get_object_or_404(Objet, id = id_objet)
-
-    request.session['nom'] = objet.nom
-    request.session['prix'] = objet.prix
-
+    objet = get_object_or_404(Objet, id = id_objet)
+    
+    if int(objet.prix) < 0:
+        return HttpResponseBadRequest("prix invalide")
+    
+    request.session['nom'] = str(objet.nom)
+    request.session['prix'] = int(objet.prix)    
     
     return redirect('recevoir_transaction_marchand')
 

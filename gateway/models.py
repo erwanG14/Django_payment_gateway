@@ -18,7 +18,7 @@ class Client(models.Model):
     info_carte = models.CharField(max_length=20)
     token = models.ForeignKey(Token, on_delete=models.PROTECT)
     def __str__(self):
-        return  str(self.id)
+        return  str(self.id)+"-"+ str(self.nom) +"-" +str(self.prenom)
     
 class Transaction(models.Model):
     banque = models.CharField(max_length=40)

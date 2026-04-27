@@ -3,11 +3,23 @@ from django.http import HttpResponse
 
 import requests
 
-from .models import create_session
+from .models import create_session,Client,Token
 
 # Create your views here.
 def paiement(request):
-    return HttpResponse("salut voici la page de paiment")
+    token = request.session.get('token')
+    if request.method == "POST":
+        banque = request.POST.get("banque")
+        nom = request.POST.get("nom")
+        prenom = request.POST.get("prenom")
+        info_carte = request.POST.get("info_carte")
+        token_objects,created = Token.objects.get_or_create(code = str(token))
+        client,created = Client.objects.get_or_create(banque = banque, nom = nom, prenom = prenom, info_carte = info_carte, token = token_objects)
+        return HttpResponse(""+str(client))
+        
+    if token:
+        return render(request,"gateway/paiement.html")
+        
 
 def recevoir_transaction_marchand(request):
     nom = request.session.get('nom')
