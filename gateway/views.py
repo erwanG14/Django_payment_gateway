@@ -25,8 +25,9 @@ def paiement(request):
             "montant_transaction" : transaction.prix_transaction,
             "refus" : True,
         }
-        url = ""
-        transaction.send_transaction_to_banque(url,transaction_data )
+        url = "http://localhost:8000/banque/reception_transaction/"
+        reponse = transaction.send_transaction_to_banque(url,transaction_data)
+        print(reponse)
         return HttpResponse(""+str(client))
         
     if token:

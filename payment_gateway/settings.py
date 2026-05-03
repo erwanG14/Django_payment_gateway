@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'banque.apps.BanqueConfig',
     'gateway.apps.GatewayConfig',
     'site_marchand.apps.SiteMarchandConfig',
     'django.contrib.admin',
