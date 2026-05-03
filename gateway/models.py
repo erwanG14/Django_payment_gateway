@@ -9,11 +9,13 @@ import requests
 # transaction : clé etrangere token info carte banque refus default true
 
 class Token(models.Model):
+    
     code = models.CharField(max_length=100)
     def __str__(self):
         return  str(self.code)
 
 class Client(models.Model):
+
     banque = models.CharField(max_length=40)
     nom = models.CharField(max_length=40)
     prenom = models.CharField(max_length=40)
@@ -23,13 +25,16 @@ class Client(models.Model):
         return  str(self.id)+"-"+ str(self.nom) +"-" +str(self.prenom)
     
 class Transaction(models.Model):
+
     banque = models.CharField(max_length=40)
     info_carte = models.CharField(max_length=20)
     token = models.ForeignKey(Token, on_delete=models.PROTECT)
     prix_transaction = models.IntegerField()
     refus = models.BooleanField(default=True)
+
     def __str__(self):
         return  str(str(self.id) +"-"+str(self.refus))
+    
     #token lié au client donc contrainte sur transaction pas utile
     """class Meta:
         constraints  = [
@@ -38,22 +43,27 @@ class Transaction(models.Model):
                 name= "unique_payment_constraint",
             )
         ]""" 
+    
     def send_transaction_to_banque(self,url,data):
+
         """data doit etre de cette forme payload = {
         "montant": 100,
         "carte": "****4242",
         "commande_id": 42,
     }"""
+        
         response = requests.post(url,json=data)
         return response
 
     
 class Session_marchand(models.Model):
+
     token = models.ForeignKey(Token, on_delete=models.PROTECT)
     nom_objet = models.CharField(max_length=50)
     prix_transaction = models.IntegerField()
     
 def create_session(nom,prix):
+
     token = Token.objects.create(code = uuid.uuid4())
     nom_objet = nom
     prix_transaction = prix

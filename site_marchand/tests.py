@@ -9,9 +9,11 @@ from .models import Objet
 
 #-----------------------------------------------Test Model----------------------------------------------------------------------------------
 class ObjetTestCase(TestCase):
+    
     def test_negative_prices_object(self):
+
         # an object can't have a negative price
-        objet = Objet(prix = -10, nom="mauvais produit")
+        objet = Objet(prix=-10, nom="mauvais produit")
         with self.assertRaises(ValidationError):
             objet.full_clean()
 
@@ -27,7 +29,9 @@ class ObjetTestCase(TestCase):
 
 class catalogueTestCase(TestCase):
     @patch("site_marchand.views.get_object_or_404")
-    def test_paying_negative_price_object(self,mock_get_object):
+
+    def test_paying_negative_price_object(self, mock_get_object):
+
         # an object with a negative price can't be bought and need to be sent to an error when "payer" is clicked
         
         faux_objet = Mock()
@@ -42,6 +46,6 @@ class catalogueTestCase(TestCase):
             follow=True
             )
         
-        self.assertContains(response, "prix invalide", status_code = 400)
+        self.assertContains(response, "prix invalide", status_code=400)
 
     

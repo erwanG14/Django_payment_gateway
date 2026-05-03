@@ -9,7 +9,7 @@ from .models import Objet
 
 def catalogue(request):
     objet = Objet.objects.all()
-    return render(request,"site_marchand/catalogue.html",{"produits" : objet})
+    return render(request, "site_marchand/catalogue.html", {"produits" : objet})
 
 def initier(request):
     token = request.session.get('token')
@@ -18,7 +18,7 @@ def initier(request):
         return redirect(url)
     
     id_objet =  request.GET.get('id')
-    objet = get_object_or_404(Objet, id = id_objet)
+    objet = get_object_or_404(Objet, id=id_objet)
     
     if int(objet.prix) < 0:
         return HttpResponseBadRequest("prix invalide")
@@ -32,16 +32,16 @@ def reussite_paiement(request):
     context = {
         "transaction_id" : request.session.get('transaction_id'),
         "montant" : request.session.get('prix'),
-        "url" : "http://localhost:8000/"+str(reverse(catalogue))
+        "url" : "http://localhost:8000/" + str(reverse(catalogue)),
     }
-    return render(request,"site_marchand/reussite_paiement.html",context)
+    return render(request, "site_marchand/reussite_paiement.html", context)
     
 
 def echec_paiement(request):
     context = {
         "raison" : "probleme bancaire",
         "montant" : request.session.get('prix'),
-        "url" : "http://localhost:8000/"+str(reverse(catalogue))
+        "url" : "http://localhost:8000/" + str(reverse(catalogue)),
     }
-    return render(request,"site_marchand/echec_paiement.html",context)
+    return render(request, "site_marchand/echec_paiement.html", context)
 
