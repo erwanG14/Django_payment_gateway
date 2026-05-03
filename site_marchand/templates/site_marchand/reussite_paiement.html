@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Paiement réussi</title>
+</head>
+<body>
+    <main>
+        <section>
+            <h1>Paiement réussi ✅</h1>
+
+            <p>Votre transaction a bien été acceptée.</p>
+            <p>Merci pour votre achat.</p>
+
+            <hr>
+
+            <h2>Résumé</h2>
+            <p><strong>Statut :</strong> Accepté</p>
+            <p><strong>Référence :</strong> {{ transaction_id }}</p>
+            <p><strong>Montant :</strong> {{ montant }} €</p>
+
+            <a href="{{url}}">Retour à l'accueil</a>
+        </section>
+    </main>
+</body>
+</html>

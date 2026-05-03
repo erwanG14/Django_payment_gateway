@@ -38,14 +38,14 @@ class Transaction(models.Model):
                 name= "unique_payment_constraint",
             )
         ]""" 
-    def send_transaction_to_banque(url,data):
+    def send_transaction_to_banque(self,url,data):
         """data doit etre de cette forme payload = {
         "montant": 100,
         "carte": "****4242",
         "commande_id": 42,
     }"""
-        r = requests.post(url,json=data)
-        return JsonResponse(r.json())
+        response = requests.post(url,json=data)
+        return response
 
     
 class Session_marchand(models.Model):

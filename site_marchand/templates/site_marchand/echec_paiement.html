@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Paiement refusé</title>
+</head>
+<body>
+    <main>
+        <section>
+            <h1>Paiement refusé ❌</h1>
+
+            <p>Votre transaction n'a pas pu être validée.</p>
+            <p>Veuillez vérifier vos informations ou essayer un autre moyen de paiement.</p>
+
+            <hr>
+
+            <h2>Détails</h2>
+            <p><strong>Statut :</strong> Refusé</p>
+            <p><strong>Raison :</strong> {{ raison }}</p>
+            <p><strong>Montant :</strong> {{ montant }} €</p>
+
+            <a href="{{url}}">Retour à l'accueil</a>
+        </section>
+    </main>
+</body>
+</html>
