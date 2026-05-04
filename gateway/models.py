@@ -1,8 +1,7 @@
 from django.db import models
-import uuid
 from django.http import JsonResponse
-import requests
 from django.core.validators import MinLengthValidator
+from django.utils import timezone
 
 # Create your models here.
 
@@ -22,6 +21,15 @@ class Client(models.Model):
     def __str__(self):
         return  str(self.id)+"-"+ str(self.nom) +"-" +str(self.prenom)   
     
+    class Meta: 
+        constraints = [
+            models.UniqueConstraint(
+               fields=["banque","nom","prenom"],
+               name = "unique_client_constraint"
+            )
+        ]
+    
+    
 class Carte(models.Model):
 
     numero_carte = models.CharField(
@@ -29,6 +37,14 @@ class Carte(models.Model):
         validators=[MinLengthValidator(12)]
     )
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
+
+    class Meta: 
+        constraints = [
+            models.UniqueConstraint(
+               fields=["numero_carte"],
+               name = "unique_card_constraint"
+            )
+        ]
 
     def __str__(self):
         return  str(self.numero_carte)
@@ -52,6 +68,7 @@ class Transaction(models.Model):
     carte = models.ForeignKey(Carte, on_delete=models.CASCADE)
     token = models.ForeignKey(Token, on_delete=models.PROTECT)
     prix_transaction = models.IntegerField()
+
     transaction_status = models.CharField(
         max_length = 20,
         choices = TransactionStatus.choices,
@@ -72,9 +89,11 @@ class Transaction(models.Model):
     
 class SessionMarchand(models.Model):
 
-    token = models.ForeignKey(Token, on_delete=models.PROTECT)
     nom_objet = models.CharField(max_length=50)
     prix_transaction = models.IntegerField()
+    idempotency_key = models.CharField(max_length=255,unique=True)
+    status = models.CharField(max_length=30, default="pending")
+    created_at = models.DateTimeField(default=timezone.now)
     
 
 

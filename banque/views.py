@@ -33,6 +33,5 @@ def reception_transaction(request):
 
     accord = verif_compte(client_data, data_transaction)
     accord = JsonResponse(accord)
-    print("accord : ",accord.text)
     
     return accord

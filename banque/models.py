@@ -22,7 +22,15 @@ class ClientBanque(models.Model):
         return str(self.nom) +  str(self.prenom)
     
 class CompteBancaire(models.Model):
-
+    
     client_banque = models.ForeignKey(ClientBanque,on_delete=models.CASCADE)
     solde = models.FloatField(default=0)
-    
+
+    class Meta:
+
+        constraints  = [
+            models.UniqueConstraint(
+                fields=["client_banque",],
+                name= "unique_CompteBancaire_constraint",
+            )
+        ]

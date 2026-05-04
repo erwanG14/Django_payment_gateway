@@ -1,10 +1,11 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from django.http import HttpResponseBadRequest,request,HttpResponse
+from django.http import HttpResponseBadRequest,request,HttpResponse,Http404
 from django.template import loader
 from django.urls import reverse
 import requests
 
 from .models import Objet
+from .service import create_session,send_session_to_gateway
 # Create your views here.
 
 def catalogue(request):
@@ -15,9 +16,9 @@ def catalogue(request):
 def initier(request):
 
     token = request.session.get('token')
-    if token:
-        url = 'http://localhost:8000/gateway/paiement/'
-        return redirect(url)
+    #if token:
+    #    url = 'http://localhost:8000/gateway/paiement/'
+    #   return redirect(url)
     
     id_objet =  request.GET.get('id')
     objet = get_object_or_404(Objet, id=id_objet)
@@ -25,10 +26,13 @@ def initier(request):
     if int(objet.prix) < 0:
         return HttpResponseBadRequest("prix invalide")
     
-    request.session['nom'] = str(objet.nom)
-    request.session['prix'] = int(objet.prix)    
+    session = create_session(produit = objet)
+    print(session)
+    reponse = send_session_to_gateway(session)
+    print("salut grand bonhomme")
+    print(reponse["payment_url"])
     
-    return redirect('recevoir_transaction_marchand')
+    return redirect(reponse["payment_url"])
 
 def reussite_paiement(request):
 

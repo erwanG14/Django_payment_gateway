@@ -25,11 +25,11 @@ def verif_compte(data_client,data_transaction):
     else:
         if compte.solde - data_transaction["montant"] > 0 :
 
-            if compte.ClientBanque.nom == data_transaction["nom"]:
+            if compte.client_banque.nom == data_transaction["nom"]:
 
-                if compte.ClientBanque.prenom == data_transaction["prenom"]:
+                if compte.client_banque.prenom == data_transaction["prenom"]:
 
-                    if compte.ClientBanque.numero_carte == data_transaction["numero_carte"]:
+                    if compte.client_banque.numero_carte == data_transaction["numero_carte"]:
                         
                         return {"refus" : False}
                     
