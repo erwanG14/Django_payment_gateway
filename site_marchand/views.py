@@ -8,10 +8,12 @@ from .models import Objet
 # Create your views here.
 
 def catalogue(request):
+    
     objet = Objet.objects.all()
     return render(request, "site_marchand/catalogue.html", {"produits" : objet})
 
 def initier(request):
+
     token = request.session.get('token')
     if token:
         url = 'http://localhost:8000/gateway/paiement/'
@@ -29,11 +31,13 @@ def initier(request):
     return redirect('recevoir_transaction_marchand')
 
 def reussite_paiement(request):
+
     context = {
         "transaction_id" : request.session.get('transaction_id'),
         "montant" : request.session.get('prix'),
         "url" : "http://localhost:8000/" + str(reverse(catalogue)),
     }
+
     return render(request, "site_marchand/reussite_paiement.html", context)
     
 
@@ -43,5 +47,6 @@ def echec_paiement(request):
         "montant" : request.session.get('prix'),
         "url" : "http://localhost:8000/" + str(reverse(catalogue)),
     }
+    
     return render(request, "site_marchand/echec_paiement.html", context)
 
