@@ -1,6 +1,7 @@
 from .models import SessionMarchand,Token
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.conf import settings
+from django.shortcuts import get_object_or_404
 import uuid
 import requests
 
@@ -9,22 +10,43 @@ import hmac
 import hashlib
 import time
 
-def send_transaction_to_banque(transaction,url):
+
+def sign_payload(body, timestamp):
+    return hmac.new(
+        settings.GATEWAY_BANQUE_SECRET.encode(),
+        timestamp.encode() + b"." + body,
+        hashlib.sha256
+    ).hexdigest()
+
+def send_transaction_to_banque(transaction):
         
-        transactionData = {
-              "banque" : transaction.banque,
+      transactionData = {
               "numero_carte" : transaction.carte.numero_carte,
               "nom_client" : transaction.carte.client.nom,
               "prenom_client" : transaction.carte.client.prenom,
-              "montant_transaction" : transaction.prix_transaction
-        }
+              "montant_transaction" : transaction.prix_transaction,
+      }
+      body = json.dumps(transactionData,separators=(",",":")).encode()
+      timestamp = str(int(time.time()))
+      signature = sign_payload(body,timestamp)
 
-        response = requests.post(url,json=transactionData)
-        return response
+      headers = {
+            "Content-Type": "application/json",
+            "X-Timestamp": timestamp,
+            "X-Signature": signature,
+            "X-Idempotency-Key": str(transaction.idempotency_key),
+      }
+
+      response = requests.post(
+            settings.BANQUE_SEND_TRANSACTION_URL,
+            data=body,
+            headers=headers,
+      )
+      return response.json()
 
 
 def create_or_get_session(data):
-
+    
       nom_objet = data["nom_objet"]
       prix_transaction = data["ammount"]
       idempotency_key = data["idempotency_key"]
@@ -35,6 +57,7 @@ def create_or_get_session(data):
             idempotency_key = idempotency_key
       )
       return session
+
 
 
 def verify_merchant_signature(request):

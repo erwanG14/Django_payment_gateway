@@ -123,4 +123,9 @@ MERCHANT_ID = "merchant_test_001"
 GATEWAY_SECRET = "super-secret-de-test"
 MERCHANT_SECRET = "super-secret-de-test"
 
+GATEWAY_BANQUE_SECRET = "super-secret-de-test2"
+BANQUE_SECRET = "super-secret-de-test2"
+
 GATEWAY_CREATE_SESSION_URL = "http://localhost:8000/gateway/recevoir_transaction_marchand/"
+
+BANQUE_SEND_TRANSACTION_URL = "http://localhost:8000/banque/reception_transaction/"

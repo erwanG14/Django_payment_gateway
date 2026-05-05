@@ -2,6 +2,7 @@ from django.db import models
 from django.http import JsonResponse
 from django.core.validators import MinLengthValidator
 from django.utils import timezone
+import uuid
 
 # Create your models here.
 
@@ -66,13 +67,19 @@ class Transaction(models.Model):
 
     banque = models.CharField(max_length=40)
     carte = models.ForeignKey(Carte, on_delete=models.CASCADE)
-    token = models.ForeignKey(Token, on_delete=models.PROTECT)
     prix_transaction = models.IntegerField()
+    created_at = models.DateTimeField(default=timezone.now)
 
     transaction_status = models.CharField(
         max_length = 20,
         choices = TransactionStatus.choices,
         default = TransactionStatus.PENDING,
+    )
+
+    idempotency_key = models.UUIDField(
+        default = uuid.uuid4,
+        unique = True,
+        editable = True,
     )
 
     def __str__(self):
@@ -94,6 +101,11 @@ class SessionMarchand(models.Model):
     idempotency_key = models.CharField(max_length=255,unique=True)
     status = models.CharField(max_length=30, default="pending")
     created_at = models.DateTimeField(default=timezone.now)
+    code_url =  models.UUIDField(
+    default=uuid.uuid4,
+    unique=True,
+    editable=True
+)
     
 
 

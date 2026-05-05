@@ -14,11 +14,6 @@ def catalogue(request):
     return render(request, "site_marchand/catalogue.html", {"produits" : objet})
 
 def initier(request):
-
-    token = request.session.get('token')
-    #if token:
-    #    url = 'http://localhost:8000/gateway/paiement/'
-    #   return redirect(url)
     
     id_objet =  request.GET.get('id')
     objet = get_object_or_404(Objet, id=id_objet)
@@ -27,10 +22,7 @@ def initier(request):
         return HttpResponseBadRequest("prix invalide")
     
     session = create_session(produit = objet)
-    print(session)
     reponse = send_session_to_gateway(session)
-    print("salut grand bonhomme")
-    print(reponse["payment_url"])
     
     return redirect(reponse["payment_url"])
 
