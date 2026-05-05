@@ -7,55 +7,78 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('banque', '0006_comptebancaire_unique_comptebancaire_constraint'),
+        ("banque", "0006_comptebancaire_unique_comptebancaire_constraint"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='BankAccount',
+            name="BankAccount",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('balance', models.FloatField(default=0)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("balance", models.FloatField(default=0)),
             ],
         ),
         migrations.CreateModel(
-            name='ClientBank',
+            name="ClientBank",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=20)),
-                ('surname', models.CharField(max_length=20)),
-                ('card_data', models.CharField(max_length=20)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=20)),
+                ("surname", models.CharField(max_length=20)),
+                ("card_data", models.CharField(max_length=20)),
             ],
         ),
         migrations.RemoveConstraint(
-            model_name='clientbanque',
-            name='unique_client_banque_constraint',
+            model_name="clientbanque",
+            name="unique_client_banque_constraint",
         ),
         migrations.RemoveConstraint(
-            model_name='comptebancaire',
-            name='unique_CompteBancaire_constraint',
+            model_name="comptebancaire",
+            name="unique_CompteBancaire_constraint",
         ),
         migrations.AddConstraint(
-            model_name='clientbank',
-            constraint=models.UniqueConstraint(fields=('name', 'surname', 'card_data'), name='unique_client_banque_constraint'),
+            model_name="clientbank",
+            constraint=models.UniqueConstraint(
+                fields=("name", "surname", "card_data"),
+                name="unique_client_banque_constraint",
+            ),
         ),
         migrations.AddField(
-            model_name='bankaccount',
-            name='client_bank',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='banque.clientbank'),
+            model_name="bankaccount",
+            name="client_bank",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="banque.clientbank"
+            ),
         ),
         migrations.RemoveField(
-            model_name='comptebancaire',
-            name='client_banque',
+            model_name="comptebancaire",
+            name="client_banque",
         ),
         migrations.AddConstraint(
-            model_name='bankaccount',
-            constraint=models.UniqueConstraint(fields=('client_bank',), name='unique_BankAccount_constraint'),
+            model_name="bankaccount",
+            constraint=models.UniqueConstraint(
+                fields=("client_bank",), name="unique_BankAccount_constraint"
+            ),
         ),
         migrations.DeleteModel(
-            name='ClientBanque',
+            name="ClientBanque",
         ),
         migrations.DeleteModel(
-            name='CompteBancaire',
+            name="CompteBancaire",
         ),
     ]

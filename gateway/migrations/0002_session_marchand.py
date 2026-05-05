@@ -7,17 +7,30 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gateway', '0001_initial'),
+        ("gateway", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Session_marchand',
+            name="Session_marchand",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nom_objet', models.CharField(max_length=50)),
-                ('prix_transaction', models.IntegerField()),
-                ('token', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='gateway.token')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("nom_objet", models.CharField(max_length=50)),
+                ("prix_transaction", models.IntegerField()),
+                (
+                    "token",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT, to="gateway.token"
+                    ),
+                ),
             ],
         ),
     ]

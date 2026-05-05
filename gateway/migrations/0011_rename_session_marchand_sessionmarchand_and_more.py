@@ -7,22 +7,26 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gateway', '0010_alter_client_carte_alter_transaction_carte'),
+        ("gateway", "0010_alter_client_carte_alter_transaction_carte"),
     ]
 
     operations = [
         migrations.RenameModel(
-            old_name='Session_marchand',
-            new_name='SessionMarchand',
+            old_name="Session_marchand",
+            new_name="SessionMarchand",
         ),
         migrations.RemoveField(
-            model_name='client',
-            name='carte',
+            model_name="client",
+            name="carte",
         ),
         migrations.AddField(
-            model_name='carte',
-            name='client',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='gateway.client'),
+            model_name="carte",
+            name="client",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="gateway.client",
+            ),
             preserve_default=False,
         ),
     ]

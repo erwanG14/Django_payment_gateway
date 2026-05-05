@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gateway', '0004_alter_client_nom_alter_client_prenom'),
+        ("gateway", "0004_alter_client_nom_alter_client_prenom"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='transaction',
-            name='prix_transaction',
+            model_name="transaction",
+            name="prix_transaction",
             field=models.IntegerField(default=0),
         ),
     ]

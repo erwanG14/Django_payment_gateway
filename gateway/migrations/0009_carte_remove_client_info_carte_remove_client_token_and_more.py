@@ -8,46 +8,80 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gateway', '0008_remove_transaction_unique_payment_constraint'),
+        ("gateway", "0008_remove_transaction_unique_payment_constraint"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Carte',
+            name="Carte",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('numero_carte', models.CharField(max_length=20, validators=[django.core.validators.MinLengthValidator(12)])),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "numero_carte",
+                    models.CharField(
+                        max_length=20,
+                        validators=[django.core.validators.MinLengthValidator(12)],
+                    ),
+                ),
             ],
         ),
         migrations.RemoveField(
-            model_name='client',
-            name='info_carte',
+            model_name="client",
+            name="info_carte",
         ),
         migrations.RemoveField(
-            model_name='client',
-            name='token',
+            model_name="client",
+            name="token",
         ),
         migrations.RemoveField(
-            model_name='transaction',
-            name='info_carte',
+            model_name="transaction",
+            name="info_carte",
         ),
         migrations.RemoveField(
-            model_name='transaction',
-            name='refus',
+            model_name="transaction",
+            name="refus",
         ),
         migrations.AddField(
-            model_name='transaction',
-            name='transaction_status',
-            field=models.CharField(choices=[('pending', 'Pending'), ('processing', 'Processing'), ('authorized', 'Authorized'), ('captured', 'Captured'), ('succeeded', 'Succeeded'), ('failed', 'Failed'), ('refused', 'Refused')], default='pending', max_length=20),
+            model_name="transaction",
+            name="transaction_status",
+            field=models.CharField(
+                choices=[
+                    ("pending", "Pending"),
+                    ("processing", "Processing"),
+                    ("authorized", "Authorized"),
+                    ("captured", "Captured"),
+                    ("succeeded", "Succeeded"),
+                    ("failed", "Failed"),
+                    ("refused", "Refused"),
+                ],
+                default="pending",
+                max_length=20,
+            ),
         ),
         migrations.AddField(
-            model_name='client',
-            name='carte',
-            field=models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to='gateway.carte'),
+            model_name="client",
+            name="carte",
+            field=models.ForeignKey(
+                default=None,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="gateway.carte",
+            ),
         ),
         migrations.AddField(
-            model_name='transaction',
-            name='carte',
-            field=models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to='gateway.carte'),
+            model_name="transaction",
+            name="carte",
+            field=models.ForeignKey(
+                default=None,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="gateway.carte",
+            ),
         ),
     ]

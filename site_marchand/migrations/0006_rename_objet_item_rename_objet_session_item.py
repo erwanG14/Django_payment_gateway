@@ -6,17 +6,17 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('site_marchand', '0005_session_created_at_session_idempotency_key_and_more'),
+        ("site_marchand", "0005_session_created_at_session_idempotency_key_and_more"),
     ]
 
     operations = [
         migrations.RenameModel(
-            old_name='Objet',
-            new_name='Item',
+            old_name="Objet",
+            new_name="Item",
         ),
         migrations.RenameField(
-            model_name='session',
-            old_name='objet',
-            new_name='item',
+            model_name="session",
+            old_name="objet",
+            new_name="item",
         ),
     ]

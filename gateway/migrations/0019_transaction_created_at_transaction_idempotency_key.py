@@ -8,18 +8,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gateway', '0018_rename_code_id_sessionmarchand_code_url'),
+        ("gateway", "0018_rename_code_id_sessionmarchand_code_url"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='transaction',
-            name='created_at',
+            model_name="transaction",
+            name="created_at",
             field=models.DateTimeField(default=django.utils.timezone.now),
         ),
         migrations.AddField(
-            model_name='transaction',
-            name='idempotency_key',
+            model_name="transaction",
+            name="idempotency_key",
             field=models.UUIDField(default=uuid.uuid4),
         ),
     ]

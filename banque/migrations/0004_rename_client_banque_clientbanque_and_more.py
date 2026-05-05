@@ -6,26 +6,26 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('banque', '0003_remove_client_banque_solde_compte_bancaire'),
+        ("banque", "0003_remove_client_banque_solde_compte_bancaire"),
     ]
 
     operations = [
         migrations.RenameModel(
-            old_name='Client_banque',
-            new_name='ClientBanque',
+            old_name="Client_banque",
+            new_name="ClientBanque",
         ),
         migrations.RenameModel(
-            old_name='compte_bancaire',
-            new_name='CompteBancaire',
+            old_name="compte_bancaire",
+            new_name="CompteBancaire",
         ),
         migrations.RenameField(
-            model_name='clientbanque',
-            old_name='info_bancaire',
-            new_name='numero_carte',
+            model_name="clientbanque",
+            old_name="info_bancaire",
+            new_name="numero_carte",
         ),
         migrations.RenameField(
-            model_name='comptebancaire',
-            old_name='Client_banque',
-            new_name='client_banque',
+            model_name="comptebancaire",
+            old_name="Client_banque",
+            new_name="client_banque",
         ),
     ]

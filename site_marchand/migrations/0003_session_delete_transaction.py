@@ -6,19 +6,27 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('site_marchand', '0002_transaction_ammount'),
+        ("site_marchand", "0002_transaction_ammount"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Session',
+            name="Session",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('objet', models.CharField(max_length=50)),
-                ('ammount', models.IntegerField(default=0)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("objet", models.CharField(max_length=50)),
+                ("ammount", models.IntegerField(default=0)),
             ],
         ),
         migrations.DeleteModel(
-            name='Transaction',
+            name="Transaction",
         ),
     ]

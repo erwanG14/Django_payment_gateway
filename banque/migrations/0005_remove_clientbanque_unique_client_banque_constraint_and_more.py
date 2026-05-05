@@ -6,16 +6,19 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('banque', '0004_rename_client_banque_clientbanque_and_more'),
+        ("banque", "0004_rename_client_banque_clientbanque_and_more"),
     ]
 
     operations = [
         migrations.RemoveConstraint(
-            model_name='clientbanque',
-            name='unique_client_banque_constraint',
+            model_name="clientbanque",
+            name="unique_client_banque_constraint",
         ),
         migrations.AddConstraint(
-            model_name='clientbanque',
-            constraint=models.UniqueConstraint(fields=('nom', 'prenom', 'numero_carte'), name='unique_client_banque_constraint'),
+            model_name="clientbanque",
+            constraint=models.UniqueConstraint(
+                fields=("nom", "prenom", "numero_carte"),
+                name="unique_client_banque_constraint",
+            ),
         ),
     ]

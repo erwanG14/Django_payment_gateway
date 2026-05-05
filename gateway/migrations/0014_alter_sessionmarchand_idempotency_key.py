@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gateway', '0013_remove_sessionmarchand_token_and_more'),
+        ("gateway", "0013_remove_sessionmarchand_token_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='sessionmarchand',
-            name='idempotency_key',
+            model_name="sessionmarchand",
+            name="idempotency_key",
             field=models.CharField(max_length=255, unique=True),
         ),
     ]

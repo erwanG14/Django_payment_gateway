@@ -7,28 +7,28 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gateway', '0012_carte_unique_card_constraint_and_more'),
+        ("gateway", "0012_carte_unique_card_constraint_and_more"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='sessionmarchand',
-            name='token',
+            model_name="sessionmarchand",
+            name="token",
         ),
         migrations.AddField(
-            model_name='sessionmarchand',
-            name='created_at',
+            model_name="sessionmarchand",
+            name="created_at",
             field=models.DateTimeField(default=django.utils.timezone.now),
         ),
         migrations.AddField(
-            model_name='sessionmarchand',
-            name='idempotency_key',
+            model_name="sessionmarchand",
+            name="idempotency_key",
             field=models.CharField(default=0, max_length=255),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='sessionmarchand',
-            name='status',
-            field=models.CharField(default='pending', max_length=30),
+            model_name="sessionmarchand",
+            name="status",
+            field=models.CharField(default="pending", max_length=30),
         ),
     ]

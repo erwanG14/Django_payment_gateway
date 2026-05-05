@@ -6,18 +6,18 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gateway', '0022_delete_token_and_more'),
+        ("gateway", "0022_delete_token_and_more"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='sessionmarchand',
-            old_name='prix_transaction',
-            new_name='price_transaction',
+            model_name="sessionmarchand",
+            old_name="prix_transaction",
+            new_name="price_transaction",
         ),
         migrations.RenameField(
-            model_name='transaction',
-            old_name='prix_transaction',
-            new_name='price_transaction',
+            model_name="transaction",
+            old_name="prix_transaction",
+            new_name="price_transaction",
         ),
     ]

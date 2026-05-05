@@ -6,12 +6,14 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('banque', '0005_remove_clientbanque_unique_client_banque_constraint_and_more'),
+        ("banque", "0005_remove_clientbanque_unique_client_banque_constraint_and_more"),
     ]
 
     operations = [
         migrations.AddConstraint(
-            model_name='comptebancaire',
-            constraint=models.UniqueConstraint(fields=('client_banque',), name='unique_CompteBancaire_constraint'),
+            model_name="comptebancaire",
+            constraint=models.UniqueConstraint(
+                fields=("client_banque",), name="unique_CompteBancaire_constraint"
+            ),
         ),
     ]

@@ -7,13 +7,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gateway', '0019_transaction_created_at_transaction_idempotency_key'),
+        ("gateway", "0019_transaction_created_at_transaction_idempotency_key"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='transaction',
-            name='idempotency_key',
+            model_name="transaction",
+            name="idempotency_key",
             field=models.UUIDField(default=uuid.uuid4, unique=True),
         ),
     ]

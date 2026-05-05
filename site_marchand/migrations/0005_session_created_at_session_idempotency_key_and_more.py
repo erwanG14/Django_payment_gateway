@@ -8,23 +8,31 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('site_marchand', '0004_alter_objet_prix'),
+        ("site_marchand", "0004_alter_objet_prix"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='session',
-            name='created_at',
+            model_name="session",
+            name="created_at",
             field=models.DateTimeField(default=django.utils.timezone.now),
         ),
         migrations.AddField(
-            model_name='session',
-            name='idempotency_key',
+            model_name="session",
+            name="idempotency_key",
             field=models.UUIDField(default=uuid.uuid4, editable=False, unique=True),
         ),
         migrations.AddField(
-            model_name='session',
-            name='session_status',
-            field=models.CharField(choices=[('pending', 'Pending'), ('succeeded', 'Succeeded'), ('failed', 'Failed')], default='pending', max_length=20),
+            model_name="session",
+            name="session_status",
+            field=models.CharField(
+                choices=[
+                    ("pending", "Pending"),
+                    ("succeeded", "Succeeded"),
+                    ("failed", "Failed"),
+                ],
+                default="pending",
+                max_length=20,
+            ),
         ),
     ]

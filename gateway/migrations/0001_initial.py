@@ -8,34 +8,67 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Token',
+            name="Token",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('code', models.CharField(max_length=100)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("code", models.CharField(max_length=100)),
             ],
         ),
         migrations.CreateModel(
-            name='Client',
+            name="Client",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('banque', models.CharField(max_length=40)),
-                ('info_carte', models.CharField(max_length=20)),
-                ('token', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='gateway.token')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("banque", models.CharField(max_length=40)),
+                ("info_carte", models.CharField(max_length=20)),
+                (
+                    "token",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT, to="gateway.token"
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Transaction',
+            name="Transaction",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('banque', models.CharField(max_length=40)),
-                ('info_carte', models.CharField(max_length=20)),
-                ('refus', models.BooleanField(default=True)),
-                ('token', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='gateway.token')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("banque", models.CharField(max_length=40)),
+                ("info_carte", models.CharField(max_length=20)),
+                ("refus", models.BooleanField(default=True)),
+                (
+                    "token",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT, to="gateway.token"
+                    ),
+                ),
             ],
         ),
     ]

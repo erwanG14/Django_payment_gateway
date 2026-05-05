@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gateway', '0020_alter_transaction_idempotency_key'),
+        ("gateway", "0020_alter_transaction_idempotency_key"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='transaction',
-            name='token',
+            model_name="transaction",
+            name="token",
         ),
     ]

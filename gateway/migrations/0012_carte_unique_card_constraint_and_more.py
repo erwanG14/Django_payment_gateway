@@ -6,16 +6,20 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gateway', '0011_rename_session_marchand_sessionmarchand_and_more'),
+        ("gateway", "0011_rename_session_marchand_sessionmarchand_and_more"),
     ]
 
     operations = [
         migrations.AddConstraint(
-            model_name='carte',
-            constraint=models.UniqueConstraint(fields=('numero_carte',), name='unique_card_constraint'),
+            model_name="carte",
+            constraint=models.UniqueConstraint(
+                fields=("numero_carte",), name="unique_card_constraint"
+            ),
         ),
         migrations.AddConstraint(
-            model_name='client',
-            constraint=models.UniqueConstraint(fields=('banque', 'nom', 'prenom'), name='unique_client_constraint'),
+            model_name="client",
+            constraint=models.UniqueConstraint(
+                fields=("banque", "nom", "prenom"), name="unique_client_constraint"
+            ),
         ),
     ]

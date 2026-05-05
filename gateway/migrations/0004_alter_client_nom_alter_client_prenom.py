@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gateway', '0003_client_nom_client_prenom'),
+        ("gateway", "0003_client_nom_client_prenom"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='client',
-            name='nom',
+            model_name="client",
+            name="nom",
             field=models.CharField(max_length=40),
         ),
         migrations.AlterField(
-            model_name='client',
-            name='prenom',
+            model_name="client",
+            name="prenom",
             field=models.CharField(max_length=40),
         ),
     ]

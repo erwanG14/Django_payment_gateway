@@ -5,11 +5,13 @@ from django.urls import reverse
 from unittest.mock import patch, Mock
 
 from .models import Item
+
 # Create your tests here.
 
-#-----------------------------------------------Test Model----------------------------------------------------------------------------------
+
+# -----------------------------------------------Test Model----------------------------------------------------------------------------------
 class ItemTestCase(TestCase):
-    
+
     def test_negative_prices_object(self):
 
         # an object can't have a negative price
@@ -23,29 +25,23 @@ class ItemTestCase(TestCase):
             Item.objects.create(price=-10, nom="bad")
 
 
+# --------------------------------------------------Test View--------------------------------------------------------------------------------
 
-
-#--------------------------------------------------Test View--------------------------------------------------------------------------------
 
 class catalogueTestCase(TestCase):
     @patch("site_marchand.views.get_object_or_404")
-
     def test_paying_negative_price_item(self, mock_get_object):
 
         # an object with a negative price can't be bought and need to be sent to an error when "payer" is clicked
-        
+
         fake_item = Mock()
         fake_item.id = 1
-        fake_item.name = 'aspirateur'
+        fake_item.name = "aspirateur"
         fake_item.price = -100
         mock_get_object.return_value = fake_item
 
         response = self.client.get(
-            reverse('initier'),
-            {'id': fake_item.id},
-            follow=True
-            )
-        
-        self.assertContains(response, "prix invalide", status_code=400)
+            reverse("initier"), {"id": fake_item.id}, follow=True
+        )
 
-    
+        self.assertContains(response, "prix invalide", status_code=400)

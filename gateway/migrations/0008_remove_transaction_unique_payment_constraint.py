@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gateway', '0007_transaction_unique_payment_constraint'),
+        ("gateway", "0007_transaction_unique_payment_constraint"),
     ]
 
     operations = [
         migrations.RemoveConstraint(
-            model_name='transaction',
-            name='unique_payment_constraint',
+            model_name="transaction",
+            name="unique_payment_constraint",
         ),
     ]

@@ -7,13 +7,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gateway', '0016_alter_sessionmarchand_code_id'),
+        ("gateway", "0016_alter_sessionmarchand_code_id"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='sessionmarchand',
-            name='code_id',
+            model_name="sessionmarchand",
+            name="code_id",
             field=models.UUIDField(default=uuid.uuid4, unique=True),
         ),
     ]

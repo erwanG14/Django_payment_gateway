@@ -18,29 +18,31 @@ def create_session(item):
         idempotency_key=uuid.uuid4(),
         session_status="pending",
     )
-    
+
     return session
+
 
 def sign_payload(body, timestamp):
 
     return hmac.new(
         settings.GATEWAY_SECRET.encode(),
         timestamp.encode() + b"." + body,
-        hashlib.sha256
+        hashlib.sha256,
     ).hexdigest()
+
 
 def send_session_to_gateway(session):
 
     data_session = {
-        "item_name" : session.item,
-        "amount" : session.amount,
-        "idempotency_key" : str(session.idempotency_key),
-        "session_status" : session.session_status,
+        "item_name": session.item,
+        "amount": session.amount,
+        "idempotency_key": str(session.idempotency_key),
+        "session_status": session.session_status,
     }
 
     body = json.dumps(data_session, separators=(",", ":")).encode()
     timestamp = str(int(time.time()))
-    signature = sign_payload(body,timestamp)
+    signature = sign_payload(body, timestamp)
 
     headers = {
         "Content-Type": "application/json",

@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gateway', '0002_session_marchand'),
+        ("gateway", "0002_session_marchand"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='client',
-            name='nom',
-            field=models.CharField(default='null', max_length=40),
+            model_name="client",
+            name="nom",
+            field=models.CharField(default="null", max_length=40),
         ),
         migrations.AddField(
-            model_name='client',
-            name='prenom',
-            field=models.CharField(default='null', max_length=40),
+            model_name="client",
+            name="prenom",
+            field=models.CharField(default="null", max_length=40),
         ),
     ]

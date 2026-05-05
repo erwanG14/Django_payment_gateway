@@ -6,54 +6,61 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gateway', '0023_rename_prix_transaction_sessionmarchand_price_transaction_and_more'),
+        (
+            "gateway",
+            "0023_rename_prix_transaction_sessionmarchand_price_transaction_and_more",
+        ),
     ]
 
     operations = [
         migrations.RemoveConstraint(
-            model_name='carte',
-            name='unique_card_constraint',
+            model_name="carte",
+            name="unique_card_constraint",
         ),
         migrations.RemoveConstraint(
-            model_name='client',
-            name='unique_client_constraint',
+            model_name="client",
+            name="unique_client_constraint",
         ),
         migrations.RenameField(
-            model_name='carte',
-            old_name='numero_carte',
-            new_name='card_data',
+            model_name="carte",
+            old_name="numero_carte",
+            new_name="card_data",
         ),
         migrations.RenameField(
-            model_name='client',
-            old_name='banque',
-            new_name='bank',
+            model_name="client",
+            old_name="banque",
+            new_name="bank",
         ),
         migrations.RenameField(
-            model_name='client',
-            old_name='nom',
-            new_name='name',
+            model_name="client",
+            old_name="nom",
+            new_name="name",
         ),
         migrations.RenameField(
-            model_name='client',
-            old_name='prenom',
-            new_name='surname',
+            model_name="client",
+            old_name="prenom",
+            new_name="surname",
         ),
         migrations.RenameField(
-            model_name='transaction',
-            old_name='banque',
-            new_name='bank',
+            model_name="transaction",
+            old_name="banque",
+            new_name="bank",
         ),
         migrations.RenameField(
-            model_name='transaction',
-            old_name='carte',
-            new_name='card',
+            model_name="transaction",
+            old_name="carte",
+            new_name="card",
         ),
         migrations.AddConstraint(
-            model_name='carte',
-            constraint=models.UniqueConstraint(fields=('card_data',), name='unique_card_constraint'),
+            model_name="carte",
+            constraint=models.UniqueConstraint(
+                fields=("card_data",), name="unique_card_constraint"
+            ),
         ),
         migrations.AddConstraint(
-            model_name='client',
-            constraint=models.UniqueConstraint(fields=('bank', 'name', 'surname'), name='unique_client_constraint'),
+            model_name="client",
+            constraint=models.UniqueConstraint(
+                fields=("bank", "name", "surname"), name="unique_client_constraint"
+            ),
         ),
     ]

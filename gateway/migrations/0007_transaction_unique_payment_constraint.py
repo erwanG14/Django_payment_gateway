@@ -6,12 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gateway', '0006_alter_transaction_prix_transaction'),
+        ("gateway", "0006_alter_transaction_prix_transaction"),
     ]
 
     operations = [
         migrations.AddConstraint(
-            model_name='transaction',
-            constraint=models.UniqueConstraint(fields=('token', 'prix_transaction', 'info_carte', 'refus'), name='unique_payment_constraint'),
+            model_name="transaction",
+            constraint=models.UniqueConstraint(
+                fields=("token", "prix_transaction", "info_carte", "refus"),
+                name="unique_payment_constraint",
+            ),
         ),
     ]

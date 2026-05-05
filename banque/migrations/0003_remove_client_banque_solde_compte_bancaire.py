@@ -7,20 +7,34 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('banque', '0002_client_banque_unique_client_banque_constraint'),
+        ("banque", "0002_client_banque_unique_client_banque_constraint"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='client_banque',
-            name='solde',
+            model_name="client_banque",
+            name="solde",
         ),
         migrations.CreateModel(
-            name='compte_bancaire',
+            name="compte_bancaire",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('solde', models.FloatField(default=0)),
-                ('Client_banque', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='banque.client_banque')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("solde", models.FloatField(default=0)),
+                (
+                    "Client_banque",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="banque.client_banque",
+                    ),
+                ),
             ],
         ),
     ]

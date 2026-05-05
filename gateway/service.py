@@ -11,94 +11,90 @@ import time
 
 
 def sign_payload(body, timestamp):
-    
+
     return hmac.new(
         settings.GATEWAY_BANQUE_SECRET.encode(),
         timestamp.encode() + b"." + body,
-        hashlib.sha256
+        hashlib.sha256,
     ).hexdigest()
 
+
 def send_transaction_to_banque(transaction):
-        
-      transactionData = {
-              "card_data" : transaction.card.card_data,
-              "name_client" : transaction.card.client.name,
-              "surname_client" : transaction.card.client.surname,
-              "price_transaction" : transaction.price_transaction,
-      }
 
-      body = json.dumps(transactionData,separators=(",",":")).encode()
-      timestamp = str(int(time.time()))
-      signature = sign_payload(body,timestamp)
+    transactionData = {
+        "card_data": transaction.card.card_data,
+        "name_client": transaction.card.client.name,
+        "surname_client": transaction.card.client.surname,
+        "price_transaction": transaction.price_transaction,
+    }
 
-      headers = {
-            "Content-Type": "application/json",
-            "X-Timestamp": timestamp,
-            "X-Signature": signature,
-            "X-Idempotency-Key": str(transaction.idempotency_key),
-      }
+    body = json.dumps(transactionData, separators=(",", ":")).encode()
+    timestamp = str(int(time.time()))
+    signature = sign_payload(body, timestamp)
 
-      response = requests.post(
-            settings.BANQUE_SEND_TRANSACTION_URL,
-            data=body,
-            headers=headers,
-      )
+    headers = {
+        "Content-Type": "application/json",
+        "X-Timestamp": timestamp,
+        "X-Signature": signature,
+        "X-Idempotency-Key": str(transaction.idempotency_key),
+    }
 
-      return response.json()
+    response = requests.post(
+        settings.BANQUE_SEND_TRANSACTION_URL,
+        data=body,
+        headers=headers,
+    )
+
+    return response.json()
 
 
 def create_or_get_session(data):
-    
-      item_name = data["item_name"]
-      price_transaction = data["amount"]
-      idempotency_key = data["idempotency_key"]
-      
-      session,created =  SessionMarchand.objects.get_or_create(
-            item_name=item_name,
 
-            price_transaction=price_transaction,
-            idempotency_key = idempotency_key
-      )
+    item_name = data["item_name"]
+    price_transaction = data["amount"]
+    idempotency_key = data["idempotency_key"]
 
-      return session
+    session, created = SessionMarchand.objects.get_or_create(
+        item_name=item_name,
+        price_transaction=price_transaction,
+        idempotency_key=idempotency_key,
+    )
 
+    return session
 
 
 def verify_merchant_signature(request):
-    
-      timestamp = request.headers.get("X-Timestamp")
-      signature = request.headers.get("X-Signature")
 
-      if not timestamp or not signature:
-            raise PermissionDenied("Signature manquante")
+    timestamp = request.headers.get("X-Timestamp")
+    signature = request.headers.get("X-Signature")
 
-      try:
-            timestamp_int = int(timestamp)
-      except ValueError:
-            raise PermissionDenied("Timestamp invalide")
+    if not timestamp or not signature:
+        raise PermissionDenied("Signature manquante")
 
-      now = int(time.time())
+    try:
+        timestamp_int = int(timestamp)
+    except ValueError:
+        raise PermissionDenied("Timestamp invalide")
 
-      if abs(now - timestamp_int) > 300:
-            raise PermissionDenied("Requête expirée")
+    now = int(time.time())
 
-      payload_to_sign = timestamp.encode() + b"." + request.body
+    if abs(now - timestamp_int) > 300:
+        raise PermissionDenied("Requête expirée")
 
-      expected_signature = hmac.new(
-            settings.MERCHANT_SECRET.encode(),
-            payload_to_sign,
-            hashlib.sha256
-      ).hexdigest()
+    payload_to_sign = timestamp.encode() + b"." + request.body
 
-      if not hmac.compare_digest(signature, expected_signature):
-            raise PermissionDenied("Signature invalide")
-      
+    expected_signature = hmac.new(
+        settings.MERCHANT_SECRET.encode(), payload_to_sign, hashlib.sha256
+    ).hexdigest()
+
+    if not hmac.compare_digest(signature, expected_signature):
+        raise PermissionDenied("Signature invalide")
+
 
 def parse_json_body(request):
-    
+
     try:
         return json.loads(request.body)
-    
+
     except json.JSONDecodeError:
         raise ValidationError("JSON invalide")
-    

@@ -7,18 +7,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gateway', '0009_carte_remove_client_info_carte_remove_client_token_and_more'),
+        ("gateway", "0009_carte_remove_client_info_carte_remove_client_token_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='client',
-            name='carte',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='gateway.carte'),
+            model_name="client",
+            name="carte",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="gateway.carte"
+            ),
         ),
         migrations.AlterField(
-            model_name='transaction',
-            name='carte',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='gateway.carte'),
+            model_name="transaction",
+            name="carte",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="gateway.carte"
+            ),
         ),
     ]

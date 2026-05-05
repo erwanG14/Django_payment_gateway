@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('site_marchand', '0003_session_delete_transaction'),
+        ("site_marchand", "0003_session_delete_transaction"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='objet',
-            name='prix',
+            model_name="objet",
+            name="prix",
             field=models.PositiveIntegerField(default=0),
         ),
     ]

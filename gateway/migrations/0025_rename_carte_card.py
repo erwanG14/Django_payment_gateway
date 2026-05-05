@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gateway', '0024_remove_carte_unique_card_constraint_and_more'),
+        ("gateway", "0024_remove_carte_unique_card_constraint_and_more"),
     ]
 
     operations = [
         migrations.RenameModel(
-            old_name='Carte',
-            new_name='Card',
+            old_name="Carte",
+            new_name="Card",
         ),
     ]
