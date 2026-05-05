@@ -2,35 +2,35 @@ from django.db import models
 
 # Create your models here.
 
-class ClientBanque(models.Model):
+class ClientBank(models.Model):
 
-    nom = models.CharField(max_length=20)
-    prenom = models.CharField(max_length=20)
-    numero_carte = models.CharField(max_length=20)
+    name = models.CharField(max_length=20)
+    surname = models.CharField(max_length=20)
+    card_data = models.CharField(max_length=20)
 
     class Meta:
 
         constraints  = [
             models.UniqueConstraint(
-                fields=["nom", "prenom", "numero_carte"],
-                name= "unique_client_banque_constraint",
+                fields=["name", "surname", "card_data"],
+                name= "unique_client_bank_constraint",
             )
         ]
 
     def __str__(self):
 
-        return str(self.nom) +  str(self.prenom)
+        return str(self.name) +  str(self.surname)
     
-class CompteBancaire(models.Model):
+class BankAccount(models.Model):
     
-    client_banque = models.ForeignKey(ClientBanque,on_delete=models.CASCADE)
-    solde = models.FloatField(default=0)
+    client_bank = models.ForeignKey(ClientBank,on_delete=models.CASCADE)
+    balance = models.FloatField(default=0)
 
     class Meta:
 
         constraints  = [
             models.UniqueConstraint(
-                fields=["client_banque",],
-                name= "unique_CompteBancaire_constraint",
+                fields=["client_bank"],
+                name= "unique_BankAccount_constraint",
             )
         ]

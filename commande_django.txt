@@ -1,5 +1,0 @@
-django-admin startproject mysite djangotutorial : permet de start un project et de generer le site de base
-
-python manage.py runserver : permet de lancer le serveur 
-
-python manage.py startapp : permet de créer les fichier de base de ton application

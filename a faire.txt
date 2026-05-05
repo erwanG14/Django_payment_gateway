@@ -1,0 +1,7 @@
+a faire
+form Django pour PaiementView
+ne plus utiliser de request.session et passer tt en appel API 1/2 fait pour site marchand -> Gateway reste Gateway -> banque fait
+rajouter clé d'idempotence fait gateway a faire banque
+by pass le csrf token sans tricher fait hmac signature
+rajouter les raison si echec paiement
+rajouter logique paiement banque

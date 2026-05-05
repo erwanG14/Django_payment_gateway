@@ -1,36 +1,34 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from django.http import HttpResponseBadRequest,request,HttpResponse,Http404
-from django.template import loader
+from django.http import HttpResponseBadRequest
 from django.urls import reverse
-import requests
 
-from .models import Objet
+from .models import Item
 from .service import create_session,send_session_to_gateway
 # Create your views here.
 
 def catalogue(request):
     
-    objet = Objet.objects.all()
-    return render(request, "site_marchand/catalogue.html", {"produits" : objet})
+    item = Item.objects.all()
+    return render(request, "site_marchand/catalogue.html", {"produits" : item})
 
 def initier(request):
     
-    id_objet =  request.GET.get('id')
-    objet = get_object_or_404(Objet, id=id_objet)
+    id_item =  request.GET.get('id')
+    item = get_object_or_404(Item, id=id_item)
     
-    if int(objet.prix) < 0:
-        return HttpResponseBadRequest("prix invalide")
+    if int(item.price) < 0:
+        return HttpResponseBadRequest("price bellow 0")
     
-    session = create_session(produit = objet)
-    reponse = send_session_to_gateway(session)
+    session = create_session(item = item)
+    response = send_session_to_gateway(session)
     
-    return redirect(reponse["payment_url"])
+    return redirect(response["payment_url"])
 
 def reussite_paiement(request):
 
     context = {
         "transaction_id" : request.session.get('transaction_id'),
-        "montant" : request.session.get('prix'),
+        "montant" : request.session.get('price'),
         "url" : "http://localhost:8000/" + str(reverse(catalogue)),
     }
 
@@ -39,8 +37,8 @@ def reussite_paiement(request):
 
 def echec_paiement(request):
     context = {
-        "raison" : "probleme bancaire",
-        "montant" : request.session.get('prix'),
+        "raison" : "banq issue",
+        "montant" : request.session.get('price'),
         "url" : "http://localhost:8000/" + str(reverse(catalogue)),
     }
     

@@ -1,10 +1,9 @@
-from .models import SessionMarchand,Token
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.conf import settings
-from django.shortcuts import get_object_or_404
-import uuid
-import requests
 
+from .models import SessionMarchand
+
+import requests
 import json
 import hmac
 import hashlib
@@ -12,6 +11,7 @@ import time
 
 
 def sign_payload(body, timestamp):
+    
     return hmac.new(
         settings.GATEWAY_BANQUE_SECRET.encode(),
         timestamp.encode() + b"." + body,
@@ -21,11 +21,12 @@ def sign_payload(body, timestamp):
 def send_transaction_to_banque(transaction):
         
       transactionData = {
-              "numero_carte" : transaction.carte.numero_carte,
-              "nom_client" : transaction.carte.client.nom,
-              "prenom_client" : transaction.carte.client.prenom,
-              "montant_transaction" : transaction.prix_transaction,
+              "card_data" : transaction.card.card_data,
+              "name_client" : transaction.card.client.name,
+              "surname_client" : transaction.card.client.surname,
+              "price_transaction" : transaction.price_transaction,
       }
+
       body = json.dumps(transactionData,separators=(",",":")).encode()
       timestamp = str(int(time.time()))
       signature = sign_payload(body,timestamp)
@@ -42,20 +43,23 @@ def send_transaction_to_banque(transaction):
             data=body,
             headers=headers,
       )
+
       return response.json()
 
 
 def create_or_get_session(data):
     
-      nom_objet = data["nom_objet"]
-      prix_transaction = data["ammount"]
+      item_name = data["item_name"]
+      price_transaction = data["amount"]
       idempotency_key = data["idempotency_key"]
       
       session,created =  SessionMarchand.objects.get_or_create(
-            nom_objet=nom_objet,
-            prix_transaction=prix_transaction,
+            item_name=item_name,
+
+            price_transaction=price_transaction,
             idempotency_key = idempotency_key
       )
+
       return session
 
 
@@ -91,8 +95,10 @@ def verify_merchant_signature(request):
       
 
 def parse_json_body(request):
+    
     try:
         return json.loads(request.body)
+    
     except json.JSONDecodeError:
         raise ValidationError("JSON invalide")
     

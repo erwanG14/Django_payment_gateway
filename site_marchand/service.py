@@ -1,3 +1,6 @@
+from django.conf import settings
+
+from .models import Session
 
 import json
 import time
@@ -6,20 +9,20 @@ import hashlib
 import requests
 import uuid
 
-from django.conf import settings
-from .models import Session
 
+def create_session(item):
 
-def create_session(produit):
     session = Session.objects.create(
-        objet=produit.nom,
-        ammount=produit.prix,
+        item=item.name,
+        amount=item.price,
         idempotency_key=uuid.uuid4(),
         session_status="pending",
     )
+    
     return session
 
 def sign_payload(body, timestamp):
+
     return hmac.new(
         settings.GATEWAY_SECRET.encode(),
         timestamp.encode() + b"." + body,
@@ -29,8 +32,8 @@ def sign_payload(body, timestamp):
 def send_session_to_gateway(session):
 
     data_session = {
-        "nom_objet" : session.objet,
-        "ammount" : session.ammount,
+        "item_name" : session.item,
+        "amount" : session.amount,
         "idempotency_key" : str(session.idempotency_key),
         "session_status" : session.session_status,
     }
@@ -51,6 +54,7 @@ def send_session_to_gateway(session):
         data=body,
         headers=headers,
     )
+
     if not response.ok:
         print(response.status_code)
         print(response.text)

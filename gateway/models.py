@@ -1,54 +1,52 @@
 from django.db import models
-from django.http import JsonResponse
 from django.core.validators import MinLengthValidator
 from django.utils import timezone
+
 import uuid
 
 # Create your models here.
 
 
-class Token(models.Model):
-    
-    code = models.CharField(max_length=100)
-    def __str__(self):
-        return  str(self.code)
 
 class Client(models.Model):
 
-    banque = models.CharField(max_length=40)
-    nom = models.CharField(max_length=40)
-    prenom = models.CharField(max_length=40)
-    
-    def __str__(self):
-        return  str(self.id)+"-"+ str(self.nom) +"-" +str(self.prenom)   
-    
+    bank = models.CharField(max_length=40)
+    name = models.CharField(max_length=40)
+    surname = models.CharField(max_length=40)
+
     class Meta: 
         constraints = [
             models.UniqueConstraint(
-               fields=["banque","nom","prenom"],
+               fields=["bank","name","surname"],
                name = "unique_client_constraint"
             )
         ]
     
+    def __str__(self):
+        return  str(self.id)+"-"+ str(self.name) +"-" +str(self.surname)   
     
-class Carte(models.Model):
+    
+    
+    
+class Card(models.Model):
 
-    numero_carte = models.CharField(
+    card_data = models.CharField(
         max_length=20,
         validators=[MinLengthValidator(12)]
     )
+
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
 
     class Meta: 
         constraints = [
             models.UniqueConstraint(
-               fields=["numero_carte"],
+               fields=["card_data"],
                name = "unique_card_constraint"
             )
         ]
 
     def __str__(self):
-        return  str(self.numero_carte)
+        return  str(self.card_data)
 
 
     
@@ -65,47 +63,43 @@ class TransactionStatus(models.TextChoices):
 
 class Transaction(models.Model):
 
-    banque = models.CharField(max_length=40)
-    carte = models.ForeignKey(Carte, on_delete=models.CASCADE)
-    prix_transaction = models.IntegerField()
-    created_at = models.DateTimeField(default=timezone.now)
-
-    transaction_status = models.CharField(
-        max_length = 20,
-        choices = TransactionStatus.choices,
-        default = TransactionStatus.PENDING,
-    )
-
     idempotency_key = models.UUIDField(
         default = uuid.uuid4,
         unique = True,
         editable = True,
     )
 
+    bank = models.CharField(max_length=40)
+    price_transaction = models.IntegerField()
+
+    card = models.ForeignKey(Card, on_delete=models.CASCADE)
+
+    transaction_status = models.CharField(
+        max_length = 20,
+        choices = TransactionStatus.choices,
+        default = TransactionStatus.PENDING,
+    )
+    created_at = models.DateTimeField(default=timezone.now)
+    
     def __str__(self):
         return  str(str(self.id) +"-"+str(self.transaction_status))
     
-    #token lié au client donc contrainte sur transaction pas utile
-    """class Meta:
-        constraints  = [
-            models.UniqueConstraint(
-                fields=["token", "prix_transaction", "info_carte", "refus"],
-                name= "unique_payment_constraint",
-            )
-        ]""" 
-    
 class SessionMarchand(models.Model):
 
-    nom_objet = models.CharField(max_length=50)
-    prix_transaction = models.IntegerField()
     idempotency_key = models.CharField(max_length=255,unique=True)
-    status = models.CharField(max_length=30, default="pending")
-    created_at = models.DateTimeField(default=timezone.now)
     code_url =  models.UUIDField(
     default=uuid.uuid4,
     unique=True,
     editable=True
-)
+    )
+
+    item_name = models.CharField(max_length=50)
+    price_transaction = models.IntegerField()
+
+    status = models.CharField(max_length=30, default="pending")
+
+    created_at = models.DateTimeField(default=timezone.now)
+    
     
 
 

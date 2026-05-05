@@ -1,43 +1,45 @@
-from .models import ClientBanque,CompteBancaire
 from django.conf import settings
+from django.core.exceptions import PermissionDenied, ValidationError
+
+from .models import ClientBank,BankAccount
 
 import json
 import hmac
 import hashlib
 import time
 
-from django.core.exceptions import PermissionDenied, ValidationError
+
 def get_client_compte(data_client):
     try:
-          client = ClientBanque.objects.get(
-               nom = data_client["nom"],
-               prenom = data_client["prenom"],
-               numero_carte = data_client["numero_carte"],
+          client = ClientBank.objects.get(
+               name = data_client["name"],
+               surname = data_client["surname"],
+               card_data = data_client["card_data"],
           )
 
-          compte = CompteBancaire.objects.get(
-             client_banque = client,
+          compte = BankAccount.objects.get(
+             client_bank = client,
           )
           return compte
-    except ClientBanque.DoesNotExist:
+    except ClientBank.DoesNotExist:
          return False
-    except CompteBancaire.DoesNotExist:
+    except BankAccount.DoesNotExist:
          return False
     
 
 
 def verif_compte(data_client,data_transaction):
-    compte = get_client_compte(data_client)
-    if not compte:
+    account = get_client_compte(data_client)
+    if not account:
         return {"refus" : True , "reason" : "no acccount"}
     else:
-        if compte.solde - data_transaction["montant"] > 0 :
+        if account.balance - data_transaction["price_transcation"] > 0 :
 
-            if compte.client_banque.nom == data_transaction["nom"]:
+            if account.client_bank.name == data_transaction["name"]:
 
-                if compte.client_banque.prenom == data_transaction["prenom"]:
+                if account.client_bank.surname == data_transaction["surname"]:
 
-                    if compte.client_banque.numero_carte == data_transaction["numero_carte"]:
+                    if account.client_bank.card_data == data_transaction["card_data"]:
                         
                         return {"refus" : False}
                     
