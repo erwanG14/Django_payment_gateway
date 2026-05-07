@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
+from .forms import PaiementForm
 from .models import SessionMarchand
 from .service import (
     create_or_get_session,
@@ -18,30 +19,31 @@ from .service import (
 class PaiementView(View):
     def get(self, request, url_code, *args, **kwargs):
         sessionMarchand = get_object_or_404(SessionMarchand, url_code=url_code)
-
+        form = PaiementForm()
         if sessionMarchand.status != "pending":
             return redirect("echec_paiement")
-        return render(request, "gateway/paiement.html")
+        return render(request, "gateway/paiement.html",{"form" : form})
 
     def post(self, request, url_code, *args, **kwargs):
-        bank = request.POST.get("banque")
-        name = request.POST.get("nom")
-        surname = request.POST.get("prenom")
-        card_data = request.POST.get("info_carte")
+        form = PaiementForm(request.POST)
         
-        reponse_from_bank = create_and_send_transaction_to_bank(
-            bank=bank,
-            name=name,
-            surname=surname,
-            url_code=url_code,
-            card_data=card_data
-        )
-    
-        if reponse_from_bank["refus"]:
+        if form.is_valid():
+            
+            reponse_from_bank = create_and_send_transaction_to_bank(
+                bank=form.cleaned_data["bank"],
+                name=form.cleaned_data["name"],
+                surname=form.cleaned_data["surname"],
+                url_code=url_code,
+                card_data=form.cleaned_data["card_data"]
+            )
+        
+            if reponse_from_bank["refus"]:
 
+                return redirect("echec_paiement")
+
+            return redirect("reussite_paiement")
+        else : 
             return redirect("echec_paiement")
-
-        return redirect("reussite_paiement")
 
 
 @csrf_exempt

@@ -63,17 +63,7 @@
     <form method="POST">
         {% csrf_token %}
 
-        <label for="banque">Banque</label>
-        <input type="text" id="banque" name="banque" maxlength="40" required>
-
-        <label for="nom">Nom</label>
-        <input type="text" id="nom" name="nom" maxlength="40" required>
-
-        <label for="prenom">Prénom</label>
-        <input type="text" id="prenom" name="prenom" maxlength="40" required>
-
-        <label for="info_carte">Numéro de carte</label>
-        <input type="text" id="info_carte" name="info_carte" maxlength="20" required>
+        {{form}}
 
         <button type="submit">Valider le paiement</button>
     </form>
