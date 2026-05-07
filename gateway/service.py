@@ -2,6 +2,7 @@ from django.core.exceptions import PermissionDenied, ValidationError
 from django.conf import settings
 
 from .models import SessionMarchand
+from .repo import create_client, create_card, create_transaction, get_session_marchande
 
 import requests
 import json
@@ -11,7 +12,6 @@ import time
 
 
 def sign_payload(body, timestamp):
-
     return hmac.new(
         settings.GATEWAY_BANQUE_SECRET.encode(),
         timestamp.encode() + b"." + body,
@@ -19,8 +19,7 @@ def sign_payload(body, timestamp):
     ).hexdigest()
 
 
-def send_transaction_to_banque(transaction):
-
+def send_transaction_to_bank(transaction):
     transactionData = {
         "card_data": transaction.card.card_data,
         "name_client": transaction.card.client.name,
@@ -49,7 +48,6 @@ def send_transaction_to_banque(transaction):
 
 
 def create_or_get_session(data):
-
     item_name = data["item_name"]
     price_transaction = data["amount"]
     idempotency_key = data["idempotency_key"]
@@ -64,7 +62,6 @@ def create_or_get_session(data):
 
 
 def verify_merchant_signature(request):
-
     timestamp = request.headers.get("X-Timestamp")
     signature = request.headers.get("X-Signature")
 
@@ -92,9 +89,31 @@ def verify_merchant_signature(request):
 
 
 def parse_json_body(request):
-
     try:
         return json.loads(request.body)
 
     except json.JSONDecodeError:
         raise ValidationError("JSON invalide")
+    
+def create_and_send_transaction_to_bank(bank,name,surname,url_code,card_data):
+    client = create_client(
+        bank=bank,
+        name=name,
+        surname=surname
+    )
+    card = create_card(
+        card_data=card_data,
+        client=client
+    )
+    session = get_session_marchande(
+        url_code=url_code
+    )
+    return send_transaction_to_bank(
+        create_transaction(
+            bank=bank,
+            price_transaction=session.price_transaction,
+            card=card,
+    ))
+
+
+

@@ -2,43 +2,29 @@ from django.conf import settings
 from django.core.exceptions import PermissionDenied, ValidationError
 
 from .models import ClientBank, BankAccount
+from .repo import get_client_compte
 
 import json
 import hmac
 import hashlib
 import time
 
-
-def get_client_compte(data_client):
-    try:
-        client = ClientBank.objects.get(
-            name=data_client["name"],
-            surname=data_client["surname"],
-            card_data=data_client["card_data"],
-        )
-
-        compte = BankAccount.objects.get(
-            client_bank=client,
-        )
-        return compte
-    except ClientBank.DoesNotExist:
-        return False
-    except BankAccount.DoesNotExist:
-        return False
-
-
-def verif_compte(data_client, data_transaction):
-    account = get_client_compte(data_client)
+def verif_compte(data):
+    account = get_client_compte(
+        name=data["name_client"],
+        surname=data["surname_client"],
+        card_data=data["card_data"]
+    )
     if not account:
         return {"refus": True, "reason": "no acccount"}
     else:
-        if account.balance - data_transaction["price_transcation"] > 0:
+        if account.balance - data["price_transaction"] > 0:
 
-            if account.client_bank.name == data_transaction["name"]:
+            if account.client_bank.name == data["name_client"]:
 
-                if account.client_bank.surname == data_transaction["surname"]:
+                if account.client_bank.surname == data["surname_client"]:
 
-                    if account.client_bank.card_data == data_transaction["card_data"]:
+                    if account.client_bank.card_data == data["card_data"]:
 
                         return {"refus": False}
 
@@ -77,3 +63,8 @@ def verify_gateway_signature(request):
 
     if not hmac.compare_digest(signature, expected_signature):
         raise PermissionDenied("Signature invalide")
+    
+def process_gateway_call(request):
+    verify_gateway_signature(request)
+    data = parse_json_body(request)
+    return verif_compte(data)

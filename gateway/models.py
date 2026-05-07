@@ -8,7 +8,6 @@ import uuid
 
 
 class Client(models.Model):
-
     bank = models.CharField(max_length=40)
     name = models.CharField(max_length=40)
     surname = models.CharField(max_length=40)
@@ -25,7 +24,6 @@ class Client(models.Model):
 
 
 class Card(models.Model):
-
     card_data = models.CharField(max_length=20, validators=[MinLengthValidator(12)])
 
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
@@ -40,7 +38,6 @@ class Card(models.Model):
 
 
 class TransactionStatus(models.TextChoices):
-
     PENDING = "pending", "Pending"
     PROCESSING = "processing", "Processing"
     AUTHORIZED = "authorized", "Authorized"
@@ -51,7 +48,6 @@ class TransactionStatus(models.TextChoices):
 
 
 class Transaction(models.Model):
-
     idempotency_key = models.UUIDField(
         default=uuid.uuid4,
         unique=True,
@@ -75,9 +71,8 @@ class Transaction(models.Model):
 
 
 class SessionMarchand(models.Model):
-
     idempotency_key = models.CharField(max_length=255, unique=True)
-    code_url = models.UUIDField(default=uuid.uuid4, unique=True, editable=True)
+    url_code = models.UUIDField(default=uuid.uuid4, unique=True, editable=True)
 
     item_name = models.CharField(max_length=50)
     price_transaction = models.IntegerField()

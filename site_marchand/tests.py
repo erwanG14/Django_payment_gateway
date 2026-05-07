@@ -11,9 +11,7 @@ from .models import Item
 
 # -----------------------------------------------Test Model----------------------------------------------------------------------------------
 class ItemTestCase(TestCase):
-
     def test_negative_prices_object(self):
-
         # an object can't have a negative price
         item = Item(price=-10, nom="mauvais produit")
         with self.assertRaises(ValidationError):

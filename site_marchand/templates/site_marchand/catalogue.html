@@ -9,14 +9,18 @@
 <h1>Catalogue</h1>
 
 <div>
-    {% for produit in produits %}
+    {% for item in items %}
         <div style="border:1px solid #ccc; padding:10px; margin:10px;">
-            <h2>{{ produit.nom }}</h2>
-            <p>Prix : {{ produit.prix }} €</p>
+            <h2>{{ item.name }}</h2>
+            <p>Prix : {{ item.price }} €</p>
 
-            <a href="http://localhost:8000/site_marchand/initier/?id={{ produit.id }}">
-                <button>Payer</button>
-            </a>
+            <form method="post" action="{% url 'catalogue' %}">
+                {% csrf_token %}
+
+                <input type="hidden" name="id" value="{{ item.id }}">
+
+                <button type="submit">Payer</button>
+            </form>
         </div>
     {% endfor %}
 </div>

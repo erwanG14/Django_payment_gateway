@@ -7,7 +7,6 @@ import uuid
 
 
 class Item(models.Model):
-
     price = models.PositiveIntegerField(default=0)
     name = models.CharField(max_length=50)
 
@@ -16,14 +15,12 @@ class Item(models.Model):
 
 
 class SessionStatus(models.TextChoices):
-
     PENDING = "pending", "Pending"
     SUCCEEDED = "succeeded", "Succeeded"
     FAILED = "failed", "Failed"
 
 
 class Session(models.Model):
-
     idempotency_key = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
 
     item = models.CharField(max_length=50)
