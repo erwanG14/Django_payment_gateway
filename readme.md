@@ -80,10 +80,3 @@ Main responsibilities:
 7. The bank verifies the account and either accepts or refuses the payment.
 8. The user is redirected to a success or failure page.
 
-## Installation
-
-Clone the repository:
-
-```bash
-git clone https://github.com/erwanG14/Django_payment_gateway.git
-cd Django_payment_gateway
